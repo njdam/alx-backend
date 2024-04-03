@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """ LRU Caching """
 
+from collections import OrderedDict
 from base_caching import BaseCaching
 
 
@@ -11,33 +12,33 @@ class LRUCache(BaseCaching):
     def __init__(self):
         """ LRUCache class Initialize """
         super().__init__()
-        self.order = []
+        # This line initializes an ordered dictionary
+        # Using in LRU caching to keep track of the order in which items
+        # were accessed or added to the cache.
+        self.cache_data = OrderedDict()
 
     def put(self, key, item):
         """ Inserting item in cache data """
         if key is not None and item is not None:
             # Checking if cache is full
             if len(self.cache_data) >= self.MAX_ITEMS and (
-                    key not in self.cache_data and self.order
+                    key not in self.cache_data
                     ):
-                # If key not in cache_data, discard the least recently used
-                lru_key = self.order.pop(0)
-                del self.cache_data[lru_key]
+                # to discard the least recently used item
+                lru_key, _ = self.cache_data.popitem(True)
                 print("DISCARD:", lru_key)
-            else:
-                # If key is already in cache_data,
-                # move it to the end of the order
-                if key in self.cache_data:
-                    self.order.remove(key)
-                self.order.append(key)
             self.cache_data[key] = item
+            # This line moves the item with the specified `key`
+            # to the opposite end of the ordered dictionary
+            # from where items are normally added
+            self.cache_data.move_to_end(key, last=False)
 
     def get(self, key):
         """ Retrieving item from cache data """
         if key is not None and key in self.cache_data:
-            # Move the key to the end of the order to mark it as
-            # the most recently used
-            self.order.remove(key)
-            self.order.append(key)
+            # This line moves the item with the specified `key`
+            # to the opposite end of the ordered dictionary
+            # from where items are normally added
+            self.cache_data.move_to_end(key, last=False)
             return self.cache_data[key]
         return None
