@@ -9,9 +9,9 @@ app.url_map.strict_slashes = False
 
 
 @app.route('/')
-def index() -> str:
-    """ The home page """
-    return render_template('templates/index.html')
+def index():
+    """ The index page """
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
