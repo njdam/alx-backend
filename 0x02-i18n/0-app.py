@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-""" Flask application for i18n """
-
+"""A Basic Flask application for i18n
+"""
 from flask import Flask, render_template
 
 
@@ -9,9 +9,10 @@ app.url_map.strict_slashes = False
 
 
 @app.route('/')
-def index():
-    """ The index page """
-    return render_template('index.html')
+def get_index() -> str:
+    """The home/index page.
+    """
+    return render_template('0-index.html')
 
 
 if __name__ == '__main__':
